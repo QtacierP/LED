@@ -1,0 +1,38 @@
+
+sample_size: 512
+in_channels: 6
+out_channels: 3
+center_input_sample: false
+time_embedding_type: positional
+freq_shift: 0
+flip_sin_to_cos: true
+down_block_types:
+- DownBlock2D
+- DownBlock2D
+- DownBlock2D
+- DownBlock2D
+- AttnDownBlock2D
+- DownBlock2D
+up_block_types:
+- UpBlock2D
+- AttnUpBlock2D
+- UpBlock2D
+- UpBlock2D
+- UpBlock2D
+- UpBlock2D
+block_out_channels:
+- 128
+- 128
+- 256
+- 256
+- 512
+- 512
+layers_per_block: 2
+mid_block_scale_factor: 1
+downsample_padding: 1
+act_fn: silu
+attention_head_dim: 8
+norm_num_groups: 32
+norm_eps: 1.0e-05
+resnet_time_scale_shift: default
+add_attention: true

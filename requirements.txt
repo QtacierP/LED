@@ -1,0 +1,16 @@
+accelerate==0.16.0
+bunch==1.0.1
+datasets==2.9.0
+diffusers==0.14.0
+numpy==1.21.2
+omegaconf==2.1.1
+opencv_python_headless==4.5.5.64
+Pillow==9.4.0
+pytorch_lightning==1.5.9
+PyYAML==6.0
+scipy==1.7.3
+tensorboard==2.7.0
+torch==1.10.2
+torchvision==0.11.2
+tqdm==4.62.3
+wandb==0.12.9

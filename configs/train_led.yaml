@@ -1,0 +1,91 @@
+seed: 42
+
+# data
+data:
+  train_good_image_dir: # high quality images
+  train_bad_image_dir: # low quality images
+  train_degraded_image_dir: # degraded images
+  val_good_image_dir: # high quality images
+  val_bad_image_dir: # low quality images
+  image_size: 512
+
+# model
+model:
+  sample_size: ${data.image_size}
+  in_channels: 6
+  out_channels: 3
+  center_input_sample: false
+  time_embedding_type: positional
+  freq_shift: 0
+  flip_sin_to_cos: true
+  down_block_types:
+  - DownBlock2D
+  - DownBlock2D
+  - DownBlock2D
+  - DownBlock2D
+  - AttnDownBlock2D
+  - DownBlock2D
+  up_block_types:
+  - UpBlock2D
+  - AttnUpBlock2D
+  - UpBlock2D
+  - UpBlock2D
+  - UpBlock2D
+  - UpBlock2D
+  block_out_channels:
+  - 128
+  - 128
+  - 256
+  - 256
+  - 512
+  - 512
+  layers_per_block: 2
+  mid_block_scale_factor: 1
+  downsample_padding: 1
+  act_fn: silu
+  attention_head_dim: 8
+  norm_num_groups: 32
+  norm_eps: 1.0e-05
+  resnet_time_scale_shift: default
+  add_attention: true
+
+
+# training
+train:
+  lr: 1e-5
+  lr_warmup_steps: 100
+  adam_beta1: 0.95
+  adam_beta2: 0.999
+  adam_eps: 1e-08
+  weight_decay: 1e-6
+  gradient_accumulation_steps: 1
+  num_epochs: 150
+  ema_max_decay: 0.9999
+  checkpointing_steps_total_limit: None
+  ema_inv_gamma: 1.0
+  ema_power: 0.75
+  checkpointing_steps: 1000
+  save_images_epochs: 5
+  adv_start_epoch: 5
+  save_model_epochs: 50
+
+diffusion:
+  num_train_steps: 1000
+  prediction_type: epsilon
+  num_inference_steps: 50
+  beta_schedule: linear
+  num_cond_steps: 800
+
+output_dir: './logs/LED'
+mixed_precision: 'fp16'
+gpus: 0,1,2,3,6,7
+num_worker: 8
+train_batch_size: 3
+eval_batch_size: 16
+test_batch_size: 16
+
+optimizer_name: adamw
+model_name: unet
+lr_scheduler_name: cosine
+use_ema: true
+logger_name: tensorboard
