@@ -165,6 +165,8 @@ class LEDPipeline(DiffusionPipeline):
         return image
 
     def _normalize(self, image):
+        if image.min() < 0:
+            return image
         if image.max() > 1:
             return (image - 127.5) / 127.5
         else:
