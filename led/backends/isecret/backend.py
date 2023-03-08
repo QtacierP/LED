@@ -2,7 +2,7 @@ from led.backends.base_backend import BaseBackend
 from led.backends.isecret.network import ISECRETNetwork
 from bunch import Bunch
 import torch
-
+import torch.utils.model_zoo as tm
 
 class ISECRETBackend(BaseBackend):
     def __init__(self):
@@ -26,5 +26,7 @@ class ISECRETBackend(BaseBackend):
                 
     def _build_model(self):
         self.model = ISECRETNetwork(self.hyperparameters).eval()
-        self.model.load_state_dict(torch.load(self.hyperparameters.model_path, map_location='cpu')['weights'])
-    
+        try:
+            self.model.load_state_dict(torch.load(self.hyperparameters.model_path, map_location='cpu')['weights'])
+        except:
+            self.model.load_state_dict(tm.load_url('https://github.com/QtacierP/LED/releases/download/weights/isecret.pt', model_dir='pretrained_weights', map_location='cpu')['weights'])

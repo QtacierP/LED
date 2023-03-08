@@ -40,7 +40,7 @@ Try
 led = LEDPipeline(backend='I-SECRET', num_cond_steps=200)
 ```
 
-For more details, please read exmaple.ipynb.
+For more details, please read example.ipynb.
 
 ## Catalog
 - [ ] Training guidance

@@ -5,6 +5,7 @@ import torch
 import numpy as np
 import cv2
 from scipy import ndimage
+import torch.utils.model_zoo as tm
 
 class PCENetBackend(BaseBackend):
     def __init__(self):
@@ -27,7 +28,10 @@ class PCENetBackend(BaseBackend):
                 
     def _build_model(self):
         self.model = PCENetwork(self.hyperparameters)
-        self.model.netG.load_state_dict(torch.load(self.hyperparameters.model_path, map_location='cpu'))
+        try:
+            self.model.netG.load_state_dict(torch.load(self.hyperparameters.model_path, map_location='cpu'))
+        except:
+            self.model.netG.load_state_dict(tm.load_url('https://github.com/QtacierP/LED/releases/download/weights/pcenet.pth', model_dir='pretrained_weights', map_location='cpu'))
     
     def _preprocess(self, input, **kwargs):
         # unnorm    

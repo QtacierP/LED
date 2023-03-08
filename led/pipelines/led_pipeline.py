@@ -26,7 +26,7 @@ from led.backends.isecret import ISECRETBackend
 from led.backends.pcenet import PCENetBackend
 from omegaconf import OmegaConf
 import logging
-
+import torch.utils.model_zoo as tm
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +71,7 @@ class LEDPipeline(DiffusionPipeline):
         try:
             state_dict = torch.load('pretrained_weights/led.bin', map_location='cpu')
         except:
-            raise NotImplementedError('The pretrained weights url are not available yet.')
+            state_dict = tm.load_url('https://github.com/QtacierP/LED/releases/download/weights/led.bin', model_dir='pretrained_weights', map_location='cpu')
         unet.load_state_dict(state_dict)
         logger.info('Loading pretrained weights for unet.')
         return unet
