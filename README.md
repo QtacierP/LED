@@ -1,9 +1,15 @@
 # Learning Enhancement From Degradation: A Diffusion Model For Fundus Image Enhancement
 
-The official implementation of the paper ``Learning Enhancement From Degradation: A Diffusion Model For Fundus Image Enhancement``. The related paper link will be updated soon.
+The official implementation of the paper [Learning Enhancement From Degradation: A Diffusion Model For Fundus Image Enhancement](https://arxiv.org/pdf/2303.04603.pdf)
 
+<p align="center">
+<img src="https://img.shields.io/github/license/QtacierP/LED" />
+ <img src="https://img.shields.io/github/issues/QtacierP/LED" />
+ <img src="https://img.shields.io/github/forks/QtacierP/LED" />
+ <img src="https://img.shields.io/github/stars/QtacierP/LED" />
+</p>
 
-![image info](./docs/led.gif)
+<img src="./docs/led.gif"  width="300" height="300">
 
 ## Highlights
 - ### Continuous and reliable enhancement
@@ -74,7 +80,12 @@ Thanks for [PCENet](https://github.com/HeverLaw/PCENet-Image-Enhancement), [ArcN
 If this work is helpful for your research, please consider citing the following BibTeX entry.
 
 ```
-Will be updated 
+@article{cheng2023learning,
+  title={Learning Enhancement From Degradation: A Diffusion Model For Fundus Image Enhancement},
+  author={Cheng, Pujin and Lin,Li, and Huang, Yijin and He, Huaqing and Luo, Wenhan and Tang, Xiaoying},
+  journal={arXiv preprint arXiv:2303.04603},
+  year={2023}
+} 
 ```
 ## License
 This repository is released under the Apache 2.0 license as found in the [LICENSE](LICENSE) file.
