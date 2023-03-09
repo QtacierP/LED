@@ -133,7 +133,7 @@ class PCEBackbone(nn.Module):
         if need_feature:
             under_activate_features = [in1, d1, d2, d3, d4]
             return out1, under_activate_features
-        return 
+        return out1
 
 
 
@@ -295,6 +295,7 @@ class PCENetwork(nn.Module):
     
 
     def forward(self, x, mask):
+        x = self.lpls_pyramid(x, mask)
         x = self.netG(x)
         x = (x + 1) * mask - 1
         return x

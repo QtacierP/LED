@@ -46,11 +46,12 @@ Try
 led = LEDPipeline(backend='I-SECRET', num_cond_steps=200)
 ```
 
-For more details, please read [example.ipynb](example.ipynb).
+For more details, please read [example.ipynb](example.ipynb). Please feel free to pull your proposed fundus enhancement methods as backend.
+
 
 ## Catalog
 - [ ] Training guidance
-- [ ] Support for ArcNet and SCRNet
+- [x] Support for ArcNet and SCRNet
 - [ ] Add related codes for data-driven degradation
 - [x] Inference pipeline
 

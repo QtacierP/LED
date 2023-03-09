@@ -1,5 +1,5 @@
 from led.backends.base_backend import BaseBackend
-from led.backends.pcenet.network import PCENetwork
+from led.backends.arcnet.network import ArcNetwork
 from bunch import Bunch
 import torch
 import numpy as np
@@ -7,31 +7,35 @@ import cv2
 from scipy import ndimage
 import torch.utils.model_zoo as tm
 
-class PCENetBackend(BaseBackend):
+class ArcNetBackend(BaseBackend):
     def __init__(self):
         super().__init__()
     
     def _set_default_hyperparameters(self):
         hyperparameters = {
-                'model_name': 'pce-net',
-                'model_path': 'pretrained_weights/pcenet.pth',
+                'model_name': 'arc-net',
+                'model_path': 'pretrained_weights/arcnet.pth',
                 'image_size': 256,
                 'image_mean': 0.5,
                 'image_std': 0.5,
-                'n_blocks': 9,
-                'input_nc': 3,
+                'n_downs': 8,
+                'input_nc': 6,
                 'output_nc': 3,
                 'n_filters': 64,
+                'filter_width': 53,
+                'nsig': 9,
+                'ratio': 4, 
+                'sub_low_ratio': 1.0,
                 'use_dropout': False}
         self.hyperparameters = Bunch(hyperparameters)
         
                 
     def _build_model(self):
-        self.model = PCENetwork(self.hyperparameters)
+        self.model = ArcNetwork(self.hyperparameters)
         try:
             self.model.netG.load_state_dict(torch.load(self.hyperparameters.model_path, map_location='cpu'))
         except:
-            self.model.netG.load_state_dict(tm.load_url('https://github.com/QtacierP/LED/releases/download/weights/pcenet.pth', model_dir='pretrained_weights', map_location='cpu'))
+            self.model.netG.load_state_dict(tm.load_url('https://github.com/QtacierP/LED/releases/download/weights/arcnet.pth', model_dir='pretrained_weights', map_location='cpu'))
     
     def _preprocess(self, input, **kwargs):
         # resize input to defalue size
@@ -70,3 +74,6 @@ class PCENetBackend(BaseBackend):
         self.image_size = input.shape[2]
         input, mask = self._preprocess(input)
         return self._post_precess(self._forward(input, mask))
+
+
+    

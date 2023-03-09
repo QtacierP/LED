@@ -18,7 +18,7 @@ class BaseBackend(ABC):
         self.model.cpu()
 
     def _preprocess(self, input, **kwargs):
-        pass
+        return input
 
     def _forward(self, input, **kwargs):
         return self.model(input, **kwargs)

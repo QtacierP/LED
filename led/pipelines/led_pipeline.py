@@ -24,6 +24,8 @@ from PIL import Image
 from led.models.unet import UNet2DGenerator, _default_config
 from led.backends.isecret import ISECRETBackend
 from led.backends.pcenet import PCENetBackend
+from led.backends.arcnet import ArcNetBackend
+from led.backends.scrnet import SCRNetBackend
 from omegaconf import OmegaConf
 import logging
 import torch.utils.model_zoo as tm
@@ -54,7 +56,7 @@ class LEDPipeline(DiffusionPipeline):
             self.scheduler = DDIMScheduler.from_config(scheduler.config)
         else:
             raise NotImplementedError(f'base_pipeline {base_pipeline} not implemented')
-        self.backend = self._build_backend(backend)
+        self._build_backend(backend)
         self.register_modules(unet=self.unet, scheduler=self.scheduler, backend=self.backend)
         self.num_cond_steps = num_cond_steps
         self.image_size = image_size
@@ -84,20 +86,31 @@ class LEDPipeline(DiffusionPipeline):
         if backend is None:
             logger.info('Using LED directly.')
         elif backend == 'i-secret' or backend == 'I-SECRET':
-            self.backend = ISECRETBackend().to(self.unet.device)
+            self.backend = ISECRETBackend()
             logger.info('Using I-SECRET backend.')
         elif backend == 'pcenet' or backend == 'PCE-Net':
-            self.backend = PCENetBackend().to(self.unet.device)
+            self.backend = PCENetBackend()
             logger.info('Using PCE-Net backend.')
+        elif backend == 'arcnet' or backend == 'ArcNet':
+            self.backend = ArcNetBackend()
+            logger.info('Using ARCNet backend.')
+        elif backend == 'scrnet' or backend == 'SCRNet':
+            self.backend = SCRNetBackend()
+            logger.info('Using SCRNet backend.')
         else:
             raise NotImplementedError(f'Backend {backend} not implemented.')
+        if self.backend is not None:
+            self.backend.to(self.unet.device)
         
-
     def cuda(self):
         self.unet.cuda()
+        if self.backend is not None:
+            self.backend.cuda()
     
     def cpu(self):
         self.unet.cpu()
+        if self.backend is not None:
+            self.backend.cpu()
 
     def numpy_to_pil(self, images):
         """
@@ -224,7 +237,8 @@ class LEDPipeline(DiffusionPipeline):
         cond_image = self._pre_process(cond_image).to(self.unet.device)
         if self.backend is not None:
             cond_image = self.backend(cond_image)
-        image = randn_tensor(cond_image.shape, generator=generator, device=self.unet.device, dtype=cond_image.dtype)
+        image = cond_image
+        '''image = randn_tensor(cond_image.shape, generator=generator, device=self.unet.device, dtype=cond_image.dtype)
         # set step values
         self.scheduler.set_timesteps(num_inference_steps)
         max_T = self.num_cond_steps
@@ -241,7 +255,7 @@ class LEDPipeline(DiffusionPipeline):
             # do x_t -> x_t-1
             image = self.scheduler.step(
                 model_output, t, image, eta=eta, use_clipped_model_output=use_clipped_model_output, generator=generator
-            ).prev_sample
+            ).prev_sample'''
         image = image.cpu().permute(0, 2, 3, 1).numpy()
         if output_type == "pil":
             return self.numpy_to_pil(image)
