@@ -1,14 +1,11 @@
-import yaml
 import argparse
 import os
 import sys
 # add current path to workspace
 sys.path.append(os.getcwd())
 from led.trainers.led_trainer import Trainer
-from bunch import Bunch
 import os
-import torch
-from omegaconf import OmegaConf, listconfig
+from omegaconf import OmegaConf
 
 
 

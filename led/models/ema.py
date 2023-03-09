@@ -1,9 +1,5 @@
 import copy
-import os
-import random
 from typing import Any, Dict, Iterable, Optional, Union
-
-import numpy as np
 import torch
 from diffusers.utils import deprecate
 

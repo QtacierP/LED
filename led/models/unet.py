@@ -1,20 +1,13 @@
-from dataclasses import dataclass
 from typing import Optional, Tuple, Union
-
 import torch
 import torch.nn as nn
-
 from diffusers.configuration_utils import ConfigMixin, register_to_config
-from diffusers.utils import BaseOutput
 from diffusers.models.embeddings import GaussianFourierProjection, TimestepEmbedding, Timesteps
 from diffusers.models.modeling_utils import ModelMixin
 from diffusers.models.unet_2d_blocks import get_down_block, UNetMidBlock2D, get_up_block
 from diffusers.models.unet_2d import UNet2DOutput
-import torch.nn.functional as F
 from omegaconf import OmegaConf
-
 _default_config = OmegaConf.load("led/models/default_config.yaml")
-
 
 class UNet2DGenerator(ModelMixin, ConfigMixin):
     r"""
