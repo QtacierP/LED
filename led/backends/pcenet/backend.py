@@ -48,6 +48,8 @@ class PCENetBackend(BaseBackend):
             input = torch.nn.functional.interpolate(image, size=self.hyperparameters.image_size, mode='bilinear', align_corners=True)
         return input, mask
     
+
+
     def _get_mask(img):
         gray = np.array(img.convert('L'))
         gra_normalize = cv2.normalize(gray, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8U)
@@ -55,8 +57,14 @@ class PCENetBackend(BaseBackend):
     
     def _forward(self, input, mask):
         return self.model(input, mask)
+    
+    def _post_precess(self, image):
+        if self.image_size != image.shape[2]:
+            image = torch.nn.functional.interpolate(image, size=self.image_size, mode='bilinear', align_corners=True)
+        return image
 
     def __call__(self, input, mask):
+        self.image_size = input.shape[2]
         input, mask = self._preprocess(input)
         return self._forward(input, mask)
     

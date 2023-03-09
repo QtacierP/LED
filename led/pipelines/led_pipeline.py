@@ -27,6 +27,8 @@ from led.backends.pcenet import PCENetBackend
 from omegaconf import OmegaConf
 import logging
 import torch.utils.model_zoo as tm
+import cv2
+import torch.nn.functional as F
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +42,7 @@ class LEDPipeline(DiffusionPipeline):
     r"""
     Pipeline for Learning Enhancement from learning Degradation (LED).
     """
-    def __init__(self, unet=None, scheduler=None, base_pipeline='ddim', backend=None, num_cond_steps=800):
+    def __init__(self, unet=None, scheduler=None, base_pipeline='ddim', backend=None, num_cond_steps=800, image_size=512):
         super().__init__()
         # make sure scheduler can always be converted to DDIM (basically)
         if scheduler is None:
@@ -55,6 +57,7 @@ class LEDPipeline(DiffusionPipeline):
         self.backend = self._build_backend(backend)
         self.register_modules(unet=self.unet, scheduler=self.scheduler, backend=self.backend)
         self.num_cond_steps = num_cond_steps
+        self.image_size = image_size
 
 
     def _set_default_scheduler(self):
@@ -138,19 +141,27 @@ class LEDPipeline(DiffusionPipeline):
 
 
     def _pre_process_for_pil(self, image):
-        image = np.array(image.resize((512, 512)))
+        image = np.array(image.resize((self.image_size, self.image_size)))
         image = image.transpose(2, 0, 1)
         image = torch.from_numpy(image)
         image = self._normalize(image).unsqueeze(0)
         return image
 
     def _pre_process_for_tensor(self, image):
+        if image.dim() == 2:
+            image = image[None, ...]
+        if image.shape[1] != self.image_size:
+            image = F.interpolate(image, size=(self.image_size, self.image_size))
         image = self._normalize(image)
         if image.dim() == 3:
             image = image[None, ...]
         return image
     
     def _pre_process_for_numpy(self, image):
+        if image.ndim == 2:
+            image = image[None, ...]
+        if image.shape[2] != self.image_size:
+            image = cv2.resize(image, (self.image_size, self.image_size))
         image = self._normalize(image)
         image = torch.from_numpy(image)
         if image.dim() == 3:
