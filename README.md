@@ -38,10 +38,12 @@ led_enhancement = led('./doc/example.jpeg')[0]
 ```
 
 Furthermore, you can combine LED with any existing SOTA methods as external backend. Current supported backends include:
-- I-SECRET
-- PCE-Net
+- [I-SECRET](https://link.springer.com/chapter/10.1007/978-3-030-87237-3_9), MICCAI 2021
+- [PCE-Net](https://link.springer.com/chapter/10.1007/978-3-031-16434-7_49), MICCAI 2022
+- [SCRNet](https://link.springer.com/chapter/10.1007/978-3-031-16434-7_47), MICCAI 2022
+- [ArcNet](https://ieeexplore.ieee.org/document/9698071/), TMI 2022
 
-Try
+Try I-SECRET backend with only one line
 ```python
 led = LEDPipeline(backend='I-SECRET', num_cond_steps=200)
 ```
