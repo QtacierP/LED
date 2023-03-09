@@ -1,4 +1,4 @@
-*/__pycache__
+__pycache__
 pretrained_weights/isecret.pt
 pretrained_weights/led.bin
 pretrained_weights/pcenet.pth

@@ -37,7 +37,7 @@ class PCENetBackend(BaseBackend):
         # resize input to defalue size
         if self.hyperparameters.image_size != input.shape[2]:
             input = torch.nn.functional.interpolate(input, 
-            size=self.hyperparameters.image_size, mode='bilinear', align_corners=True)
+            size=self.hyperparameters.image_size, mode='bilinear')
         # unnorm   
         image = input * self.hyperparameters.image_std + self.hyperparameters.image_mean
         image = image.permute(0, 2, 3, 1)

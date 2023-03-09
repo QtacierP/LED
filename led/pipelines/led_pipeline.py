@@ -237,8 +237,7 @@ class LEDPipeline(DiffusionPipeline):
         cond_image = self._pre_process(cond_image).to(self.unet.device)
         if self.backend is not None:
             cond_image = self.backend(cond_image)
-        image = cond_image
-        '''image = randn_tensor(cond_image.shape, generator=generator, device=self.unet.device, dtype=cond_image.dtype)
+        image = randn_tensor(cond_image.shape, generator=generator, device=self.unet.device, dtype=cond_image.dtype)
         # set step values
         self.scheduler.set_timesteps(num_inference_steps)
         max_T = self.num_cond_steps
@@ -255,7 +254,7 @@ class LEDPipeline(DiffusionPipeline):
             # do x_t -> x_t-1
             image = self.scheduler.step(
                 model_output, t, image, eta=eta, use_clipped_model_output=use_clipped_model_output, generator=generator
-            ).prev_sample'''
+            ).prev_sample
         image = image.cpu().permute(0, 2, 3, 1).numpy()
         if output_type == "pil":
             return self.numpy_to_pil(image)

@@ -67,7 +67,7 @@ class SCRNetBackend(BaseBackend):
     
     def _post_precess(self, image):
         if self.image_size != image.shape[2]:
-            image = torch.nn.functional.interpolate(image, size=self.image_size, mode='bilinear', align_corners=True)
+            image = torch.nn.functional.interpolate(image, size=self.image_size, mode='bilinear')
         return image
 
     def __call__(self, input):
