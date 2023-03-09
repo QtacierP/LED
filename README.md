@@ -85,7 +85,7 @@ If this work is helpful for your research, please consider citing the following 
 ```
 @article{cheng2023learning,
   title={Learning Enhancement From Degradation: A Diffusion Model For Fundus Image Enhancement},
-  author={Cheng, Pujin and Lin,Li, and Huang, Yijin and He, Huaqing and Luo, Wenhan and Tang, Xiaoying},
+  author={Cheng, Pujin and Lin, Li and Huang, Yijin and He, Huaqing and Luo, Wenhan and Tang, Xiaoying},
   journal={arXiv preprint arXiv:2303.04603},
   year={2023}
 } 
