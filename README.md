@@ -15,7 +15,7 @@ The official implementation of the paper [Learning Enhancement From Degradation:
 - ### Continuous and reliable enhancement
 ![image info](./docs/Continuous.png)
 
-- ### Flexable and ffectively integrated into any SOTA
+- ### Flexable and effectively integrated into any SOTA
 ![image info](./docs/OC.png)
 
 ![image info](./docs/vessels.png)
