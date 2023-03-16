@@ -283,7 +283,7 @@ class Trainer():
                         num_inference_steps=self.config.diffusion.num_inference_steps,
                         output_type="numpy",
                         output_max_val=255.0,
-                    ).images
+                    )
                     # denormalize the images and save to tensorboard
                     real_bad = ((bad_eval_batch['image'].cpu().numpy() * 0.5 + 0.5) * 255.0).astype(np.uint8)
                     images = np.concatenate([real_bad, images_processed.transpose(0, 3, 1, 2)], axis=0)
