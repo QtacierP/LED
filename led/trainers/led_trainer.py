@@ -96,7 +96,7 @@ class Trainer():
             dirs = sorted(dirs, key=lambda x: int(x.split("-")[1]))
             checkpoint_path = dirs[-1] if len(dirs) > 0 else None
         else:
-            checkpoint_path = os.path.basename(self.config.resume)
+            checkpoint_path = os.path.split(self.config.resume)[-1]
         if checkpoint_path is None:
             self.accelerator.print(
                 f"Checkpoint '{checkpoint_path}' does not exist. Starting a new training run."
